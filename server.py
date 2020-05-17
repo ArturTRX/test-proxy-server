@@ -6,6 +6,7 @@ import re
 
 import aiohttp
 from aiohttp import web
+
 import tools
 import configs
 
@@ -32,12 +33,11 @@ def process_response(response: aiohttp.web.Response) -> web.Response:
     """ Special preprocessor for processing response text and links """
 
     if 'text/html' in response.content_type:
-        system_characters = ['<', '>', '|', '/', '"']
         soup = tools.url_replacer(BeautifulSoup(response.body, "html.parser"))
 
         targets = list(
             filter(
-                lambda x: any(map(lambda y: y not in system_characters, x)),
+                lambda x: all(map(lambda y: y not in configs.SYSTEM_CHARACTERS, x)),
                 soup.find_all(text=re.compile(configs.REGEX_PATTERN))
             )
         )
@@ -77,4 +77,8 @@ app.router.add_route('*', '/forums/topic/{name}', handle)
 app.router.add_route('*', '/ajax-impressions-track/', ajax_mock)
 
 if __name__ == "__main__":
+    assert type(configs.REPLACE_URLS) == list
+    assert len(configs.SYMBOL_TO_APPEND) == 1
+    assert configs.REGEX_PATTERN
+    
     web.run_app(app)
