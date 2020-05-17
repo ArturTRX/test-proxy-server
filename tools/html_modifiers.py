@@ -17,6 +17,6 @@ def url_replacer(soup: bs4.BeautifulSoup) -> bs4.BeautifulSoup:
     for a_tag in soup.findAll('a'):
         if a_tag.get('href'):
             for url in configs.REPLACE_URLS:
-                a_tag['href'].replace(url, "")
+                a_tag['href'] = a_tag['href'].replace(url, "")
             a_tag['target'] = None
     return soup
