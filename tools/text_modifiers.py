@@ -7,7 +7,8 @@ import configs
 
 __all__ = \
     [
-        'article_text_modifier'
+        'article_text_modifier',
+        'element_modifier'
     ]
 
 
