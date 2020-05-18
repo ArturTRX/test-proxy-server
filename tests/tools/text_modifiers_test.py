@@ -12,6 +12,7 @@ import configs
 
 class TestTextModifiers(unittest.TestCase):
     """ Test class for text modifier """
+
     def setUp(self) -> None:
         html = \
             '<head> ' \
@@ -27,7 +28,7 @@ class TestTextModifiers(unittest.TestCase):
         )
 
     def test_1_article_text_modifier(self):
-        """ Case for article """
+        """ Valid test cases for article """
         tools.article_text_modifier(self.targets)
 
         self.assertEqual(len(self.soup.text), 198)
@@ -38,9 +39,14 @@ class TestTextModifiers(unittest.TestCase):
         )
 
     def test_2_element_modifier(self):
-        """ Case for element """
+        """ Valid test cases for element """
         self.assertEqual(tools.element_modifier('привет'), 'привет™')
         self.assertEqual(tools.element_modifier('..привет..'), '..привет™..')
         self.assertEqual(tools.element_modifier('_.!привет).'), '_.!привет™).')
 
         self.assertEqual(tools.element_modifier('Приветик'), 'Приветик')  # more than 6 symbols
+        self.assertEqual(tools.element_modifier('Доров'), 'Доров')  # less than 6 symbols
+
+
+if __name__ == '__main__':
+    unittest.main()
