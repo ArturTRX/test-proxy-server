@@ -66,15 +66,9 @@ async def handle(request: web.Request) -> web.Response:
     return web.Response(body=html, content_type=content_type)
 
 
-async def ajax_mock(request: web.Request) -> web.Response:  # pylint: disable=unused-argument
-    """ Handler for mocking ajax response """
-
-    return web.Response()
-
 app = web.Application()
-app.router.add_route('*', '/forums/topic/{name}', handle)
+app.router.add_route('*', '/{tail:.*}', handle)
 
-app.router.add_route('*', '/ajax-impressions-track/', ajax_mock)
 
 if __name__ == "__main__":
     assert type(configs.REPLACE_URLS) == list
