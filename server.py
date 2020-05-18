@@ -80,5 +80,5 @@ if __name__ == "__main__":
     assert type(configs.REPLACE_URLS) == list
     assert len(configs.SYMBOL_TO_APPEND) == 1
     assert configs.REGEX_PATTERN
-    
+
     web.run_app(app)
