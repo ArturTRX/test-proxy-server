@@ -1,8 +1,8 @@
 # test-proxy-server
-# to run code:
+# To start the server:
 - pip install -r req.txt
 - python server.py
-# url for viewing a result will be: 
+# URL to view the result: 
 - {hostname-from-console}/forums/topic/{num}
 # exapmle: 
 - 0.0.0.0:8080/forums/topic/24951
