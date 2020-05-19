@@ -3,6 +3,7 @@ Main server file
 """
 
 import re
+import urllib.parse as url_parsers
 
 import aiohttp
 from aiohttp import web
@@ -49,8 +50,23 @@ def process_response(response: aiohttp.web.Response) -> web.Response:
 
 async def fetch(session: aiohttp.client.ClientSession, url: str) -> tuple:
     """ Middleware for articles """
+    async def subfetch(url, subdomain_url):
+        parsed = url_parsers.urlparse(url)
+        replaced = parsed._replace(netloc=subdomain_url)
+        url = replaced.geturl()
+        # get acknowledged if server has required url
+        res = await session.head(url)
+        return res, url
 
     async with session.get(url) as response:
+        if response.status != 200:
+            for subdomain in configs.SUBDOMAINS:
+                res, new_url = await subfetch(url, subdomain)
+                if res.status != 404:
+                    return await fetch(session, new_url)
+                else:
+                    continue
+
         content_type = response.content_type
         body = await response.read()
         return body, content_type
