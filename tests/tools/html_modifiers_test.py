@@ -5,10 +5,18 @@ Tests for html modifiers
 import unittest
 import bs4
 import tools
+import configs
 
 
 class TestHTMLModifiers(unittest.TestCase):
     """ Test class for html modifier """
+
+    def setUp(self) -> None:
+        """
+        Setting up values for tests
+        """
+
+        configs.REPLACE_URLS = ["https://dou.ua", "https://jobs.dou.ua"]
 
     def test_1_valid_replace_case(self):
         """ Valid case """
